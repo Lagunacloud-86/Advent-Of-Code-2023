@@ -30,6 +30,7 @@ fn main()
     println!("The result of the second puzzle is: {result}");
 }
 
+#[tailcall]
 fn solve_second<P>(file_path : P) -> i32
     where P: AsRef<Path>
 {
