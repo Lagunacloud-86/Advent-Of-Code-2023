@@ -3,18 +3,17 @@ mod almanac;
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
-use crate::almanac::{Almanac, AlmanacRange, create_almanac, /*Range*/};
 
 
 
 fn main() {
     let mut result : i128;
 
-    result = solve_first(String::from("input/sample-first.txt"));
-    println!("The result of the first sample is: {result}");
-
-    result = solve_first(String::from("input/puzzle.txt"));
-    println!("The result of the first puzzle is: {result}");
+    // result = solve_first(String::from("input/sample-first.txt"));
+    // println!("The result of the first sample is: {result}");
+    //
+    // result = solve_first(String::from("input/puzzle.txt"));
+    // println!("The result of the first puzzle is: {result}");
 
 
     result = solve_second(String::from("input/sample-second.txt"));
@@ -41,26 +40,26 @@ fn read_file_contents<P>(file_path : P) -> Option<String>
     return Some(file_contents);
 }
 
-fn solve_first<P>(file_path : P) -> i128
-    where P: AsRef<Path>
-{
-    let file_contents_result = read_file_contents(file_path);
-    if file_contents_result == None {
-        println!("Unable to read file contents");
-        return 0;
-    }
-    let file_contents = file_contents_result.unwrap();
-    let almanac:Almanac = create_almanac(&file_contents);
-    let mut result:i128 = i128::MAX;
-
-
-    for seed in &almanac.seeds {
-        result = i128::min(result, find_seed_location(*seed, &almanac));
-    }
-
-
-    return result;
-}
+// fn solve_first<P>(file_path : P) -> i128
+//     where P: AsRef<Path>
+// {
+//     let file_contents_result = read_file_contents(file_path);
+//     if file_contents_result == None {
+//         println!("Unable to read file contents");
+//         return 0;
+//     }
+//     let file_contents = file_contents_result.unwrap();
+//     let almanac:Almanac = create_almanac(&file_contents);
+//     let mut result:i128 = i128::MAX;
+//
+//
+//     // for seed in &almanac.seeds {
+//     //     result = i128::min(result, find_seed_location(*seed, &almanac));
+//     // }
+//
+//
+//     return result;
+// }
 
 fn solve_second<P>(file_path : P) -> i128
     where P: AsRef<Path>
@@ -72,30 +71,38 @@ fn solve_second<P>(file_path : P) -> i128
     }
 
     let file_contents = file_contents_result.unwrap();
-    let almanac:Almanac = create_almanac(&file_contents);
-    let mut result:i128 = i128::MAX;
 
+    let parsed = file_contents
+        .split("\n\n");
 
-    let mut index:usize = 0;
-    while index < almanac.seeds.len() {
-        let start_index = &almanac.seeds[index];
-        let length = &almanac.seeds[index + 1];
-        //let seed_range = Range::create(*start_index, *length);
-        let mut seed:usize = *start_index as usize;
-        while seed < (start_index + length) as usize {
-            result = i128::min(result, find_seed_location(seed as i128, &almanac));
-            seed += 1;
-        }
-        //result = i128::min(result, find_seed_range_lowest_location(&seed_range, &almanac));
-        //index += 2;
-        index += 2;
+    for p in parsed {
+        println!("{}", p);
     }
+
+    // let almanac:Almanac = create_almanac(&file_contents);
+    // let mut result:i128 = i128::MAX;
+    //
+    //
+    // let mut index:usize = 0;
+    // while index < almanac.seeds.len() {
+    //     let start_index = &almanac.seeds[index];
+    //     let length = &almanac.seeds[index + 1];
+    //     //let seed_range = Range::create(*start_index, *length);
+    //     let mut seed:usize = *start_index as usize;
+    //     while seed < (start_index + length) as usize {
+    //         result = i128::min(result, find_seed_location(seed as i128, &almanac));
+    //         seed += 1;
+    //     }
+    //     //result = i128::min(result, find_seed_range_lowest_location(&seed_range, &almanac));
+    //     //index += 2;
+    //     index += 2;
+    // }
     // for seed in &almanac.seeds {
     //     result = i128::min(result, find_seed_location(*seed, &almanac));
     // }
 
 
-    return result;
+    return 0;
 }
 
 // fn find_seed_range_lowest_location(seed_range: &Range, almanac: &Almanac) -> i128 {
@@ -134,27 +141,27 @@ fn solve_second<P>(file_path : P) -> i128
 //
 //     return result;
 // }
-
-fn find_seed_location(seed: i128, almanac: &Almanac) -> i128 {
-    let mut result:i128 = seed;
-
-    result = find_value(result, &almanac.seed_to_soil);
-    result = find_value(result, &almanac.soil_to_fertilizer);
-    result = find_value(result, &almanac.fertilizer_to_water);
-    result = find_value(result, &almanac.water_to_light);
-    result = find_value(result, &almanac.light_to_temperature);
-    result = find_value(result, &almanac.temperature_to_humidity);
-    result = find_value(result, &almanac.humidity_to_location);
-
-    return result;
-}
-
-
-fn find_value(lookup: i128, ranges: &Vec<AlmanacRange>) -> i128 {
-    for range in ranges {
-        if range.get_source_range().contains(lookup) {
-            return range.calculate_destination(lookup);
-        }
-    }
-    return lookup;
-}
+//
+// fn find_seed_location(seed: i128, almanac: &Almanac) -> i128 {
+//     let mut result:i128 = seed;
+//
+//     result = find_value(result, &almanac.seed_to_soil);
+//     result = find_value(result, &almanac.soil_to_fertilizer);
+//     result = find_value(result, &almanac.fertilizer_to_water);
+//     result = find_value(result, &almanac.water_to_light);
+//     result = find_value(result, &almanac.light_to_temperature);
+//     result = find_value(result, &almanac.temperature_to_humidity);
+//     result = find_value(result, &almanac.humidity_to_location);
+//
+//     return result;
+// }
+//
+//
+// fn find_value(lookup: i128, ranges: &Vec<AlmanacRange>) -> i128 {
+//     for range in ranges {
+//         if range.get_source_range().contains(lookup) {
+//             return range.calculate_destination(lookup);
+//         }
+//     }
+//     return lookup;
+// }
