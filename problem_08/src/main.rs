@@ -126,7 +126,7 @@ fn solve_second<P>(file_path : P) -> i64
         let right = left_right.nth(0).unwrap().trim();
 
         instruction_map.insert(
-            String::from(name),
+            String::from(name.trim()),
             Instruction::create(
                 left[1..].trim(),
                 right[..right.len()-1].trim())

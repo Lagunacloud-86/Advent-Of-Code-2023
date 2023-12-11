@@ -73,10 +73,12 @@ fn solve_second<P>(file_path : P) -> i128
     let file_contents = file_contents_result.unwrap();
 
     let parsed = file_contents
-        .split("\n\n");
+        .split("\n\n")
+        .map(|l| l.split('\n').nth(1))
+        .collect::<_>();
+
 
     for p in parsed {
-        println!("{}", p);
     }
 
     // let almanac:Almanac = create_almanac(&file_contents);
